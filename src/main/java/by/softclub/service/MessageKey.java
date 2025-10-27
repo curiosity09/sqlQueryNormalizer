@@ -4,8 +4,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public enum MessageKey {
-    ORACLE("ORACLE"),
-    POSTGRESQL("POSTGRESQL"),
+    ORACLE("Oracle"),
+    POSTGRESQL("PostgreSQL"),
     BIND("BIND => ["),
     SELECT("SELECT"),
     END_BRACKET("]"),

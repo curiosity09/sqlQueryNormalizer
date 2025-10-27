@@ -1,6 +1,7 @@
 package by.softclub.config;
 
 import by.softclub.service.SqlQueryNormalizerBot;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -10,8 +11,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Component
+@Slf4j
 public class BotInitializer {
     private final SqlQueryNormalizerBot telegramBot;
+
     @Autowired
     public BotInitializer(SqlQueryNormalizerBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -20,10 +23,10 @@ public class BotInitializer {
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        try{
+        try {
             telegramBotsApi.registerBot(telegramBot);
-        } catch (TelegramApiException e){
-
+        } catch (TelegramApiException e) {
+            log.error(e.getMessage(), e);
         }
     }
 }
