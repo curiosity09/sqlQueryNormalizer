@@ -1,0 +1,8 @@
+services:
+  sql-bot:
+    build: .
+    container_name: sql-normalizer-bot-v2
+    environment:
+     - BOT_TOKEN=${BOT_TOKEN}
+     - BOT_NAME=${BOT_NAME}
+    restart: unless-stopped

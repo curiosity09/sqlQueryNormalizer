@@ -18,6 +18,11 @@ public class SqlNormalizerService {
         return replaceParams(bind, query, defineLanguage(langCode));
     }
 
+    public boolean isCorrectSQLQuery(String messageText) {
+        messageText = messageText.toUpperCase();
+        return messageText.contains(MessageKey.SELECT.code()) && messageText.contains(MessageKey.BIND.code());
+    }
+
     private String replaceParams(final String bind, String query, final int languageNumber) {
         String[] split = bind.split(", ");
         for (String param : split) {
