@@ -1,0 +1,3 @@
+bot:
+  token: ${BOT_TOKEN:BotToken}
+  name: ${BOT_NAME:BotName}
