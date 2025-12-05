@@ -1,5 +1,6 @@
 package by.softclub.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -8,19 +9,18 @@ public class SqlNormalizerService {
     private static final int ORACLE_LANG_NUM = 1;
 
     public String normalizeQuery(final String initialQuery, final String langCode) {
-        final String initialQueryUpper = initialQuery.toUpperCase();
-        final String query = initialQueryUpper.substring(
-                initialQueryUpper.indexOf(MessageKey.SELECT.code()), initialQueryUpper.indexOf(MessageKey.BIND.code())
+        final String query = initialQuery.substring(
+                StringUtils.indexOfIgnoreCase(initialQuery, MessageKey.SELECT.code()), StringUtils.indexOfIgnoreCase(initialQuery, MessageKey.BIND.code())
         ).trim();
-        final String bind = initialQueryUpper.substring(
-                initialQueryUpper.indexOf(MessageKey.BIND.code()) + MessageKey.BIND.code().length(), initialQueryUpper.lastIndexOf(MessageKey.END_BRACKET.code())
+        final String bind = initialQuery.substring(
+                StringUtils.indexOfIgnoreCase(initialQuery, MessageKey.BIND.code()) + MessageKey.BIND.code().length(), StringUtils.lastIndexOfIgnoreCase(initialQuery, MessageKey.END_BRACKET.code())
         ).trim();
         return replaceParams(bind, query, defineLanguage(langCode));
     }
 
     public boolean isCorrectSQLQuery(String messageText) {
-        messageText = messageText.toUpperCase();
-        return messageText.contains(MessageKey.SELECT.code()) && messageText.contains(MessageKey.BIND.code());
+        return StringUtils.containsIgnoreCase(messageText, MessageKey.SELECT.code())
+                && StringUtils.containsIgnoreCase(messageText, MessageKey.BIND.code());
     }
 
     private String replaceParams(final String bind, String query, final int languageNumber) {
